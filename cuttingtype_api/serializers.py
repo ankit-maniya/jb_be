@@ -11,10 +11,10 @@ class CuttingTypesSerializer(serializers.ModelSerializer):
     partyid = PartyModelSerializer()
 
     #  Warning : django_user is a route name which defined in user_api app in urls, which is also same as url name
-    userid = serializers.HyperlinkedRelatedField(
-        view_name="django_user-detail",
-        read_only=True
-    )
+    # userid = serializers.HyperlinkedRelatedField(
+    #     view_name="django_user-detail",
+    #     read_only=True
+    # )
 
     # partyid = serializers.HyperlinkedRelatedField(
     #     view_name="party_view-detail",
