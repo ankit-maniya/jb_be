@@ -19,8 +19,8 @@ class Cuttingtypes(models.Model):
         max_digits=20, decimal_places=2, blank=True, null=True)
     isactive = models.BooleanField(blank=True, null=True)
     isdelete = models.BooleanField(blank=True, null=True)
-    createdat = models.DateTimeField(blank=True, null=True)
-    updatedat = models.DateTimeField(blank=True, null=True)
+    createdat = models.DateTimeField(auto_now_add=True)
+    updatedat = models.DateTimeField(auto_now=True)
     objid = models.CharField(max_length=250, blank=True, null=True)
     old_userid = models.CharField(max_length=250, blank=True, null=True)
 

@@ -9,7 +9,7 @@ from django.db import models
 
 class Partys(models.Model):
     userid = models.ForeignKey(
-        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid')
+        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', null=False)
     p_name = models.CharField(max_length=150, blank=True, null=True)
     p_billingname = models.CharField(max_length=200, blank=True, null=True)
     p_mobile = models.CharField(max_length=200, blank=True, null=True)
@@ -19,8 +19,8 @@ class Partys(models.Model):
         max_digits=20, decimal_places=2, blank=True, null=True)
     isactive = models.BooleanField(blank=True, null=True)
     isdelete = models.BooleanField(blank=True, null=True)
-    createdat = models.DateTimeField(blank=True, null=True)
-    updatedat = models.DateTimeField(blank=True, null=True)
+    createdat = models.DateTimeField(auto_now_add=True)
+    updatedat = models.DateTimeField(auto_now=True)
     # This c_cuttingtype not require anymore as we are now saving each party data into cuttingtype table
     # c_cuttingtype = models.ForeignKey(
     #     Cuttingtypes, models.DO_NOTHING, db_column='c_cuttingtype', blank=True, null=True, verbose_name="cutting_type_data")

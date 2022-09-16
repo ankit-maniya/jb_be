@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+# from utils.common_exception_handler import api_exception_handler
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -161,5 +162,6 @@ SIMPLE_JWT = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    # "EXCEPTION_HANDLER": 'utils.common_exception_handler.api_exception_handler',
 }
