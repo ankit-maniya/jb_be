@@ -20,13 +20,14 @@ class PartyModelSerializer(serializers.ModelSerializer):
         p_name = attrs.get('p_name')
 
         if user is None:
-            raise ValidationError({'msg1': "Your Token Is Expired!"})
+            raise ValidationError
+        ({"msg1": "Your Token Is Expired!"})
 
         attrs['userid'] = DjangoUser.objects.get(id=user.id)
         attrs['isactive'] = True
 
         if p_name is None or len(p_name) <= 0:
             raise ValidationError(
-                {'msg1': "p_name field is required!", 'msg2': "p_name field is not empty!"})
+                {"msg1": ["p_name field is required!", "p_name field is not empty!"]})
 
         return attrs

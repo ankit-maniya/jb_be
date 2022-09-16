@@ -156,12 +156,12 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # JWT Config
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    # "EXCEPTION_HANDLER": 'utils.common_exception_handler.api_exception_handler',
+    "EXCEPTION_HANDLER": 'utils.common_exception_handler.api_exception_handler',
 }

@@ -25,10 +25,6 @@ class PartyModelViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={
                                          'user': self.request.user})
-        try:
-            serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer)
-        except Exception as e:
-            return ErrorResponse(str(e))
-        else:
-            return SuccessResponse(serializer.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return SuccessResponse(serializer.data, 201)

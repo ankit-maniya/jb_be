@@ -38,7 +38,7 @@ class DjangoUserRegistrationView(APIView):
             user = serializer.save()
             if user is not None:
                 token = get_tokens_for_user(user)
-                return SuccessResponse({'token': token})
+                return SuccessResponse({'token': token}, 201)
             else:
                 return ErrorResponse({'error': 'User Not Created'})
         return ErrorResponse({'error': serializer.errors})
