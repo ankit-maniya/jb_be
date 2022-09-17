@@ -1,5 +1,10 @@
 from rest_framework import viewsets
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .filters import LoatFilter
 
 from .pagination import StandardResultsSetPagination
 
@@ -14,12 +19,22 @@ from utils.response_handling import ErrorResponse, SuccessResponse
 class LoatModelViewSet(viewsets.ModelViewSet):
     serializer_class = LoatsSerializer
     queryset = Loats.objects.all()
+
     permission_classes = [IsAuthenticated]
+
     pagination_class = StandardResultsSetPagination
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = LoatFilter
+
+    search_fields = ['l_cuttingtype', 'l_price',
+                     'l_numofdimonds', 'partyid__p_name']
+
+    ordering_fields = '__all__'
+    ordering = ['l_month', 'l_year']
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            print(self.request.user)
             is_admin = self.request.user.is_admin
             if is_admin:
                 return self.queryset
