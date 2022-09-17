@@ -31,7 +31,7 @@ class LoatModelViewSet(viewsets.ModelViewSet):
                      'l_numofdimonds', 'partyid__p_name']
 
     ordering_fields = '__all__'
-    ordering = ['l_month', 'l_year']
+    ordering = ['l_entrydate']
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -52,3 +52,21 @@ class LoatModelViewSet(viewsets.ModelViewSet):
 
         self.perform_create(serializer)
         return SuccessResponse(serializer.data, 201)
+
+    def update(self, request, *args, **kwargs):
+        partial = False
+
+        if request.method == 'PATCH':
+            partial = True
+
+        partyId = request.data.get('partyid')
+        if partyId is None:
+            partyId = 0
+
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial, context={'user': self.request.user, 'partyId': partyId})
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_update(serializer)
+        return SuccessResponse(serializer.data, 206)

@@ -33,3 +33,21 @@ class CuttingTypeModelViewSet(viewsets.ModelViewSet):
 
         self.perform_create(serializer)
         return SuccessResponse(serializer.data, 201)
+
+    def update(self, request, *args, **kwargs):
+        partial = False
+
+        if request.method == 'PATCH':
+            partial = True
+
+        partyId = request.data.get('partyid')
+        if partyId is None:
+            partyId = 0
+
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial, context={'user': self.request.user, 'partyId': partyId})
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_update(serializer)
+        return SuccessResponse(serializer.data, 206)

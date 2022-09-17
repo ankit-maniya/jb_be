@@ -57,7 +57,7 @@ class DjangoUser(AbstractBaseUser):
     u_mobile = models.CharField(max_length=20, blank=True, null=True)
     u_address = models.CharField(max_length=500, blank=True, null=True)
     u_role = models.CharField(
-        default="USER", max_length=100, blank=True, null=True)
+        default="USER", max_length=100)
     u_timezone = models.CharField(max_length=100, blank=True, null=True)
     isactive = models.BooleanField(default=True, blank=True, null=True)
     isdelete = models.BooleanField(default=False, blank=True, null=True)

@@ -9,16 +9,16 @@ from party_api.models import Partys
 class Cuttingtypes(models.Model):
     c_id = models.AutoField(primary_key=True)
     userid = models.ForeignKey(
-        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', related_name='django_user', null=True)
+        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', related_name='django_user')
     partyid = models.ForeignKey(
-        Partys, models.DO_NOTHING, db_column='partyid', related_name='party', null=True)
-    c_name = models.CharField(max_length=150, blank=True, null=True)
-    c_colorcode = models.CharField(max_length=200, blank=True, null=True)
-    c_multiwithdiamonds = models.BooleanField(blank=True, null=True)
+        Partys, models.DO_NOTHING, db_column='partyid', related_name='party')
+    c_name = models.CharField(max_length=150)
+    c_colorcode = models.CharField(max_length=200)
+    c_multiwithdiamonds = models.BooleanField(default=False)
     c_price = models.DecimalField(
-        max_digits=20, decimal_places=2, blank=True, null=True)
-    isactive = models.BooleanField(blank=True, null=True)
-    isdelete = models.BooleanField(blank=True, null=True)
+        max_digits=20, decimal_places=2)
+    isactive = models.BooleanField(default=True)
+    isdelete = models.BooleanField(default=False)
     createdat = models.DateTimeField(auto_now_add=True)
     updatedat = models.DateTimeField(auto_now=True)
     objid = models.CharField(max_length=250, blank=True, null=True)

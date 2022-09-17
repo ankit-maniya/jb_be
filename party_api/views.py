@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from utils.response_handling import ErrorResponse, SuccessResponse
+
 from .models import Partys
 
 from .serializers import PartyModelSerializer
