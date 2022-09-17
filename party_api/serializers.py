@@ -2,11 +2,13 @@ from rest_framework import serializers
 from rest_framework.exceptions import APIException, ValidationError
 
 from user_api.models import DjangoUser
+from user_api.serializers import DjangoUserSerializer
 
 from .models import Partys
 
 
 class PartyModelSerializer(serializers.ModelSerializer):
+    userid = DjangoUserSerializer(read_only=True)
     # userid = serializers.HyperlinkedRelatedField(
     #     view_name='django_user-detail', read_only=True)
 
