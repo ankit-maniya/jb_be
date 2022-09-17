@@ -14,12 +14,12 @@ from .models import Loats
 
 class PartyListingField(serializers.RelatedField):
     def to_representation(self, instance):
-        return Fields.PartyListingField(instance)
+        return Fields.partyListingField(instance)
 
 
 class UserListingField(serializers.RelatedField):
     def to_representation(self, instance):
-        return Fields.UserListingField(instance)
+        return Fields.userListingField(instance)
 
 
 class LoatsSerializer(serializers.ModelSerializer):

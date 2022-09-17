@@ -1,6 +1,6 @@
 class Fields:
     @staticmethod
-    def PartyListingField(instance):
+    def partyListingField(instance):
         return {
             'id': instance.id,
             'p_name': instance.p_name,
@@ -8,7 +8,7 @@ class Fields:
         }
 
     @staticmethod
-    def UserListingField(instance):
+    def userListingField(instance):
         return {
             'id': instance.id,
             'u_name': instance.u_name,

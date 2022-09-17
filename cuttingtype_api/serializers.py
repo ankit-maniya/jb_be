@@ -13,12 +13,12 @@ from .models import Cuttingtypes
 
 class PartyListingField(serializers.RelatedField):
     def to_representation(self, instance):
-        return Fields.PartyListingField(instance)
+        return Fields.partyListingField(instance)
 
 
 class UserListingField(serializers.RelatedField):
     def to_representation(self, instance):
-        return Fields.UserListingField(instance)
+        return Fields.userListingField(instance)
 
 
 class CuttingTypesSerializer(serializers.ModelSerializer):
