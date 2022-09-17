@@ -27,5 +27,5 @@ class LoatFilter(FilterSet):
 
     class Meta:
         model = Loats
-        fields = ['l_numofdimonds', 'isactive',
-                  'l_weight', 'l_price', 'l_month', 'l_year', 'l_multiwithdiamonds', 'isdelete', 'partyid', 'l_entrydate']
+        fields = ['l_numofdimonds', 'isactive', 'l_weight', 'l_price', 'l_month',
+                  'l_year', 'l_multiwithdiamonds', 'isdelete', 'partyid', 'l_entrydate']

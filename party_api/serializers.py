@@ -11,7 +11,7 @@ from .models import Partys
 
 class UserListingField(serializers.RelatedField):
     def to_representation(self, instance):
-        return Fields.UserListingField(instance)
+        return Fields.userListingField(instance)
 
 
 class PartyModelSerializer(serializers.ModelSerializer):

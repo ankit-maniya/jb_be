@@ -1,5 +1,12 @@
 from rest_framework import viewsets
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .filters import CuttingTypeFilter
+
+from .pagination import StandardResultsSetPagination
 
 from .models import Cuttingtypes
 
@@ -13,6 +20,17 @@ class CuttingTypeModelViewSet(viewsets.ModelViewSet):
     serializer_class = CuttingTypesSerializer
     queryset = Cuttingtypes.objects.all()
     permission_classes = [IsAuthenticated]
+
+    pagination_class = StandardResultsSetPagination
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = CuttingTypeFilter
+
+    search_fields = ['c_id',  'c_multiwithdiamonds', 'c_price', 'c_colorcode',
+                     'c_name', 'isdelete', 'isactive', 'createdat', 'partyid__id']
+
+    ordering_fields = '__all__'
+    ordering = ['createdat']
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
