@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_api',
     'cuttingtype_api',
     'party_api',
+    'loat_api',
 ]
 
 MIDDLEWARE = [

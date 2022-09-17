@@ -26,13 +26,13 @@ def api_exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
             'success': False,
             "status_code": 0,
             "message": "",
-            "data": [],
+            "details": [],
         }
 
         status_code = response.status_code
 
         error_payload["status_code"] = status_code
         error_payload["message"] = http_code_to_message[status_code]
-        error_payload["data"] = response.data
+        error_payload["details"] = response.data
         response.data = error_payload
     return response
