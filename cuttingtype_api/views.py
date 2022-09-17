@@ -5,7 +5,7 @@ from .models import Cuttingtypes
 
 from .serializers import CuttingTypesSerializer
 
-from utils.response_handling import SuccessResponse
+from utils.response_handling import ErrorResponse, SuccessResponse
 # Create your views here.
 
 
@@ -21,3 +21,15 @@ class CuttingTypeModelViewSet(viewsets.ModelViewSet):
                 return self.queryset
             return self.queryset.filter(userid=self.request.user)
         return []
+
+    def create(self, request, *args, **kwargs):
+        partyId = request.data.get('partyid')
+        if partyId is None:
+            return ErrorResponse('partyid is required!', 417)
+
+        serializer = self.get_serializer(
+            data=request.data, context={'user': self.request.user, 'partyId': partyId})
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_create(serializer)
+        return SuccessResponse(serializer.data, 201)

@@ -5,17 +5,24 @@ from http import HTTPStatus
 class ErrorResponse(Response):
     def __init__(self, *args, **kwargs):
         super(ErrorResponse, self).__init__(*args, **kwargs)
-        self.status_code = 404
+        status_code = 404
+
+        if len(args) > 1:
+            status_code = args[1]
+
+        http_code_to_message = {v.value: v.description for v in HTTPStatus}
 
         error_payload = {
             'success': False,
-            "status_code": 404,
+            "status_code": status_code,
             "message": "",
-            "data": [],
+            "details": [],
         }
 
-        error_payload['message'] = args[0]
+        error_payload["message"] = http_code_to_message[status_code]
+        error_payload['details'] = args[0]
 
+        self.status_code = status_code
         self.data = error_payload
 
 

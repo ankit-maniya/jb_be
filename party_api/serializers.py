@@ -18,10 +18,6 @@ class PartyModelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context.get('user')
 
-        if user is None:
-            raise ValidationError
-        ({"msg1": "Your Token Is Expired!"})
-
         validated_data['userid'] = DjangoUser.objects.get(id=user.id)
         validated_data['isactive'] = True
 

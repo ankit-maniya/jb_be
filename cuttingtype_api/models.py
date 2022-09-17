@@ -9,9 +9,9 @@ from party_api.models import Partys
 class Cuttingtypes(models.Model):
     c_id = models.AutoField(primary_key=True)
     userid = models.ForeignKey(
-        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', related_name='django_user')
+        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', related_name='django_user', null=True)
     partyid = models.ForeignKey(
-        Partys, models.DO_NOTHING, db_column='partyid', blank=True, null=True)
+        Partys, models.DO_NOTHING, db_column='partyid', related_name='party', null=True)
     c_name = models.CharField(max_length=150, blank=True, null=True)
     c_colorcode = models.CharField(max_length=200, blank=True, null=True)
     c_multiwithdiamonds = models.BooleanField(blank=True, null=True)
