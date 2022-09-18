@@ -12,7 +12,7 @@ class Loats(models.Model):
         settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='userid', related_name='loat_django_user')
     partyid = models.ForeignKey(
         Partys, models.DO_NOTHING, db_column='partyid', related_name='loat_party')
-    l_cuttingtype = models.CharField(max_length=250,)
+    l_cuttingtype = models.CharField(max_length=250)
     l_entrydate = models.DateField()
     l_price = models.DecimalField(max_digits=20, decimal_places=2)
     l_weight = models.DecimalField(max_digits=20, decimal_places=2)

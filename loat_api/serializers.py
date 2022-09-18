@@ -49,13 +49,16 @@ class LoatsSerializer(serializers.ModelSerializer):
 
         validated_data['isactive'] = True
 
-        return Loats.objects.create(**validated_data)
+        # return Loats.objects.create(**validated_data)
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
         partyId = self.context.get('partyId')
 
         if partyId != 0:
-            instance.partyid = Partys.objects.get(id=partyId)
+            try:
+                instance.partyid = Partys.objects.get(id=partyId)
+            except Exception as e:
+                raise ValidationError({"db_error": e})
 
-        instance.save()
-        return instance
+        return super().update(instance, validated_data)

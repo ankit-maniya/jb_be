@@ -35,4 +35,5 @@ class PartyModelSerializer(serializers.ModelSerializer):
 
         validated_data['isactive'] = True
 
-        return Partys.objects.create(**validated_data)
+        # return Partys.objects.create(**validated_data)
+        return super().create(validated_data)

@@ -56,13 +56,16 @@ class CuttingTypesSerializer(serializers.ModelSerializer):
 
         validated_data['isactive'] = True
 
-        return Cuttingtypes.objects.create(**validated_data)
+        # return Cuttingtypes.objects.create(**validated_data)
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
         partyId = self.context.get('partyId')
 
         if partyId != 0:
-            instance.partyid = Partys.objects.get(id=partyId)
-
-        instance.save()
-        return instance
+            try:
+                instance.partyid = Partys.objects.get(id=partyId)
+            except Exception as e:
+                raise ValidationError({"db_error": e})
+        # return instance
+        return super().update(instance, validated_data)
