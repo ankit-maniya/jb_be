@@ -118,19 +118,20 @@ class LoatModelViewSet(viewsets.ModelViewSet):
         totalYears = uniqueArrOfObjList(db_loats, 'year')
 
         for year in totalYears:
-            # totalMonths = uniqueArrOfObjList(db_loats, 'month')
             loatsObj = filterAmountWithArray(
                 db_loats, 'year', year)
 
-            yearWiseLoats.append({
-                "year": year,
-                "loats": loatsObj['filteredData'],
-                # "monthWiseTotal": loatsObj['filteredData'],
-                "yearWiseTotalWeight": ceil(
-                    loatsObj['amountObj']['yearWiseTotalWeight']*100)/100,
-                "yearWiseTotalDimonds": ceil(
-                    loatsObj['amountObj']['yearWiseTotalDimonds']*100)/100,
-                "yearWiseTotalAmounts": ceil(
-                    loatsObj['amountObj']['yearWiseTotalAmounts']*100)/100,
-            })
+            yearWiseLoats.append({"year": year, **loatsObj})
+
+        #     yearWiseLoats.append({
+        #         "year": year,
+        #         "loats": loatsObj['filteredData'],
+        #         # "monthWiseTotal": loatsObj['filteredData'],
+        #         "yearWiseTotalWeight": ceil(
+        #             loatsObj['amountObj']['yearWiseTotalWeight']*100)/100,
+        #         "yearWiseTotalDimonds": ceil(
+        #             loatsObj['amountObj']['yearWiseTotalDimonds']*100)/100,
+        #         "yearWiseTotalAmounts": ceil(
+        #             loatsObj['amountObj']['yearWiseTotalAmounts']*100)/100,
+            # })
         return SuccessResponse(yearWiseLoats, 200)
