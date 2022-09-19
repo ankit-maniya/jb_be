@@ -32,9 +32,6 @@ def filterAmountWithArray(arrayItems, find_key, value):
             yearWiseData['yearWiseTotalAmounts'] = Decimal(
                 yearWiseData['yearWiseTotalAmounts']) + Decimal(x['totalAmounts'])
 
-            idx_month = next((i for i, item in enumerate(
-                upList['monthWiseTotal']) if item['month'] == x['month']), -1)
-
             monthWiseData = {
                 "monthWiseTotalWeight": 0,
                 "monthWiseTotalDimonds": 0,
@@ -47,9 +44,12 @@ def filterAmountWithArray(arrayItems, find_key, value):
             monthWiseData['monthWiseTotalAmounts'] += ceil(
                 x['totalAmounts']*100)/100
 
+            idx_month = next((i for i, item in enumerate(
+                upList['monthWiseTotal']) if item['month'] == x['month']), -1)
+
             if idx_month < 0:
                 upList['monthWiseTotal'].append(
-                    {"month": x['month'], "dayWiseTotal": [], **monthWiseData})
+                    {"month": x['month'], "dayWiseTotal": [x], **monthWiseData})
             else:
                 upList['monthWiseTotal'][idx_month]['dayWiseTotal'].append(
                     x)

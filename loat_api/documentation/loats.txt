@@ -1,0 +1,11 @@
+=========================================================================================================
+                                daywise_loats_price_details
+=========================================================================================================
+
+Requirement: Get Pricing -> Loat wise with filter of Year & Order of month, day, year
+Ans: -> you can use daywise_loats_price_details method for fetching daywise data which has not containe
+    any loats data. It is only return howmany loats in per day.
+
+    For fetching loats data, you have to make filter in given endpoints passing l_entrydate
+    it will return all loats based on your filters
+    /api/loat/?isactive=true&partyid=93&isdelete=false&l_entrydate=2021-06-29

@@ -80,7 +80,7 @@ class LoatModelViewSet(viewsets.ModelViewSet):
         return SuccessResponse(serializer.data, 206)
 
     @action(detail=False, methods=['GET'], name='Get Pricing Loat wise with filter of Month, Year, Day')
-    def loatwise_price_details(self, request, *args, **kwargs):
+    def daywise_loats_price_details(self, request, *args, **kwargs):
         user = self.request.user
         f_order = request.query_params.get('order')
         f_year = request.query_params.get('year')
@@ -88,6 +88,7 @@ class LoatModelViewSet(viewsets.ModelViewSet):
         order = ['-year', 'month', 'day']
         filter = {
             "isactive": True,
+            "isdelete": False,
             "userid": user.id,
             "l_entrydate__isnull": False
         }
