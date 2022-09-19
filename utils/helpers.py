@@ -32,25 +32,26 @@ def filterAmountWithArray(arrayItems, find_key, value):
             yearWiseData['yearWiseTotalAmounts'] = Decimal(
                 yearWiseData['yearWiseTotalAmounts']) + Decimal(x['totalAmounts'])
 
-            monthWiseData = {
-                "monthWiseTotalWeight": 0,
-                "monthWiseTotalDimonds": 0,
-                "monthWiseTotalAmounts": 0,
-            }
-
-            monthWiseData['monthWiseTotalWeight'] += ceil(
-                x['totalWeight']*100)/100
-            monthWiseData['monthWiseTotalDimonds'] += x['totalDimonds']
-            monthWiseData['monthWiseTotalAmounts'] += ceil(
-                x['totalAmounts']*100)/100
-
             idx_month = next((i for i, item in enumerate(
                 upList['monthWiseTotal']) if item['month'] == x['month']), -1)
 
             if idx_month < 0:
+
+                monthWiseData = {
+                    "monthWiseTotalWeight": Decimal(x['totalWeight']),
+                    "monthWiseTotalDimonds": x['totalDimonds'],
+                    "monthWiseTotalAmounts": Decimal(x['totalAmounts']),
+                }
+
                 upList['monthWiseTotal'].append(
                     {"month": x['month'], "dayWiseTotal": [x], **monthWiseData})
             else:
+                upList['monthWiseTotal'][idx_month]['monthWiseTotalWeight'] = Decimal(
+                    upList['monthWiseTotal'][idx_month]['monthWiseTotalWeight']) + Decimal(x['totalWeight'])
+                upList['monthWiseTotal'][idx_month]['monthWiseTotalDimonds'] += x['totalDimonds']
+                upList['monthWiseTotal'][idx_month]['monthWiseTotalAmounts'] = Decimal(
+                    upList['monthWiseTotal'][idx_month]['monthWiseTotalAmounts']) + Decimal(x['totalAmounts'])
+
                 upList['monthWiseTotal'][idx_month]['dayWiseTotal'].append(
                     x)
     return upList
