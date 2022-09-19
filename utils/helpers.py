@@ -1,4 +1,5 @@
 from math import ceil
+from decimal import Decimal
 
 
 def filterArray(arrayItems, find_key, value):
@@ -22,15 +23,14 @@ def filterAmountWithArray(arrayItems, find_key, value):
         if x[f'{find_key}'] == value:
 
             if upList.get('monthWiseTotal') is None:
+                upList = yearWiseData
                 upList["monthWiseTotal"] = []
-                upList["amt_obj"] = yearWiseData
 
-            yearWiseData['yearWiseTotalWeight'] += ceil(
-                x['totalDimonds']*100)/100
-            yearWiseData['yearWiseTotalDimonds'] += ceil(
-                x['totalWeight']*100)/100
-            yearWiseData['yearWiseTotalAmounts'] += ceil(
-                x['totalAmounts']*100)/100
+            yearWiseData['yearWiseTotalWeight'] = Decimal(
+                yearWiseData['yearWiseTotalWeight']) + Decimal(x['totalWeight'])
+            yearWiseData['yearWiseTotalDimonds'] += x['totalDimonds']
+            yearWiseData['yearWiseTotalAmounts'] = Decimal(
+                yearWiseData['yearWiseTotalAmounts']) + Decimal(x['totalAmounts'])
 
             idx_month = next((i for i, item in enumerate(
                 upList['monthWiseTotal']) if item['month'] == x['month']), -1)
@@ -42,15 +42,14 @@ def filterAmountWithArray(arrayItems, find_key, value):
             }
 
             monthWiseData['monthWiseTotalWeight'] += ceil(
-                x['totalDimonds']*100)/100
-            monthWiseData['monthWiseTotalDimonds'] += ceil(
                 x['totalWeight']*100)/100
+            monthWiseData['monthWiseTotalDimonds'] += x['totalDimonds']
             monthWiseData['monthWiseTotalAmounts'] += ceil(
                 x['totalAmounts']*100)/100
 
             if idx_month < 0:
                 upList['monthWiseTotal'].append(
-                    {"month": x['month'], "dayWiseTotal": [], "amt_obj": monthWiseData})
+                    {"month": x['month'], "dayWiseTotal": [], **monthWiseData})
             else:
                 upList['monthWiseTotal'][idx_month]['dayWiseTotal'].append(
                     x)
@@ -58,7 +57,16 @@ def filterAmountWithArray(arrayItems, find_key, value):
 
 
 def uniqueArrOfObjList(arrayItems, year):
-    # upList = []
+    itemList = []
+
+    for x in arrayItems:
+        # check if exists in itemList or not
+        if x[f'{year}'] not in itemList:
+            itemList.append(x[f'{year}'])
+
+    return itemList
+
+# upList = []
     # # {
     # #     "year": 2021,
     # #     "monthWiseTotal": [
@@ -126,12 +134,3 @@ def uniqueArrOfObjList(arrayItems, year):
 
     #         upList.append(
     #             {"year": x[f'{year}'], "monthWiseTotal": [], "amt_obj": yearWiseData})
-
-    itemList = []
-
-    for x in arrayItems:
-        # check if exists in itemList or not
-        if x[f'{year}'] not in itemList:
-            itemList.append(x[f'{year}'])
-
-    return itemList

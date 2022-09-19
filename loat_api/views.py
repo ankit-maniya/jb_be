@@ -82,56 +82,58 @@ class LoatModelViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], name='Get Pricing Loat wise with filter of Month, Year, Day')
     def loatwise_price_details(self, request, *args, **kwargs):
         user = self.request.user
+        f_order = request.query_params.get('order')
+        f_year = request.query_params.get('year')
 
-        db_loats = (Loats.objects.values(
-            'l_entrydate',
-            year=ExtractYear('l_entrydate'),
-            month=ExtractMonth('l_entrydate'),
-            day=ExtractDay('l_entrydate')
-        ).filter(
-            isactive=True, userid=user.id, l_entrydate__isnull=False,
-        ).annotate(
-            totalDateWiseLoats=Count('id'),
-            totalDimonds=Sum('l_numofdimonds'),
-            totalWeight=Sum('l_weight'),
-            totalAmounts=ExpressionWrapper(
-                Sum(
-                    Case(
-                        When(l_multiwithdiamonds=True, then=F(
-                            'l_price')*F('l_numofdimonds')),
-                        When(l_multiwithdiamonds=False, then=F(
-                            'l_price')*F('l_weight')),
-                        # default=F('l_price')*F('l_weight'),
-                        default=Value(0.0),
-                        output_field=FloatField()
-                    ),
-                ), output_field=FloatField()
-            )
-        ).
-            order_by(
-            '-year',
-            'month',
-            'day'
-        ))
+        order = ['-year', 'month', 'day']
+        filter = {
+            "isactive": True,
+            "userid": user.id,
+            "l_entrydate__isnull": False
+        }
 
-        yearWiseLoats = []
-        totalYears = uniqueArrOfObjList(db_loats, 'year')
+        if f_year:
+            filter['year'] = f_year
 
-        for year in totalYears:
-            loatsObj = filterAmountWithArray(
-                db_loats, 'year', year)
+        if f_order:
+            order = f_order.split(",")
 
-            yearWiseLoats.append({"year": year, **loatsObj})
+        try:
+            db_loats = (Loats.objects.values(
+                'l_entrydate',
+                year=ExtractYear('l_entrydate'),
+                month=ExtractMonth('l_entrydate'),
+                day=ExtractDay('l_entrydate')
+            ).filter(
+                **filter
+            ).annotate(
+                totalDateWiseLoats=Count('id'),
+                totalDimonds=Sum('l_numofdimonds'),
+                totalWeight=Sum('l_weight'),
+                totalAmounts=ExpressionWrapper(
+                    Sum(
+                        Case(
+                            When(l_multiwithdiamonds=True, then=F(
+                                'l_price')*F('l_numofdimonds')),
+                            When(l_multiwithdiamonds=False, then=F(
+                                'l_price')*F('l_weight')),
+                            # default=F('l_price')*F('l_weight'),
+                            default=Value(0.0),
+                            output_field=FloatField()
+                        ),
+                    ), output_field=FloatField()
+                )
+            ).order_by(*order))
 
-        #     yearWiseLoats.append({
-        #         "year": year,
-        #         "loats": loatsObj['filteredData'],
-        #         # "monthWiseTotal": loatsObj['filteredData'],
-        #         "yearWiseTotalWeight": ceil(
-        #             loatsObj['amountObj']['yearWiseTotalWeight']*100)/100,
-        #         "yearWiseTotalDimonds": ceil(
-        #             loatsObj['amountObj']['yearWiseTotalDimonds']*100)/100,
-        #         "yearWiseTotalAmounts": ceil(
-        #             loatsObj['amountObj']['yearWiseTotalAmounts']*100)/100,
-            # })
-        return SuccessResponse(yearWiseLoats, 200)
+            yearWiseLoats = []
+            totalYears = uniqueArrOfObjList(db_loats, 'year')
+
+            for year in totalYears:
+                loatsObj = filterAmountWithArray(
+                    db_loats, 'year', year)
+
+                yearWiseLoats.append({"year": year, **loatsObj})
+
+            return SuccessResponse(yearWiseLoats, 200)
+        except Exception as e:
+            return ErrorResponse({"db_error": str(e)}, 404)
